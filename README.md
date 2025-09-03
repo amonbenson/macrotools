@@ -41,7 +41,7 @@ WARN  examples/log.c:9: This is not good.
 ERROR examples/log.c:10: We got a serious problem!
 ```
 
-## Error handling
+## Error Handling
 
 ### Example
 
@@ -70,4 +70,59 @@ $ make examples && ./build/examples/error
 ```console
 WARN  examples/error.c:11: Error 1: bad_function() failed. Continuing...
 ERROR examples/error.c:12: Error 1: bad_function() failed again! Who could have known?
+```
+
+## Unit Testing
+
+### Example
+
+```c
+#include <string.h>
+#include "macrotools/test.h"
+
+DESCRIBE(suite_one, "basic assertions") {
+    IT("compares numbers") {
+        EXPECT_EQ(1, 1);
+        EXPECT_NE(1, 2);
+        EXPECT(123 == 123);
+    }
+}
+
+int always_twenty() {
+    return 20;
+}
+
+DESCRIBE(suite_two, "advanced examples") {
+    // you can declare local variables here. Note that they DO NOT get reset after each test run.
+    const char *blub_str = "blub";
+
+    IT("checks function return values") {
+        EXPECT_EQ(always_twenty(), 20);
+    }
+
+    IT("checks strings (using strcmp)") {
+        EXPECT_EQ(strcmp(blub_str, "blub"), 0);
+    }
+}
+
+// List all your test suites here.
+// Use TEST_MAIN_EXTERN(...) if you want to link test suites from separate c files.
+TEST_MAIN(suite_one, suite_two)
+```
+
+```bash
+$ make examples && ./build/examples/test
+```
+
+```console
+basic assertions
+  ✓ compares numbers
+
+advanced examples
+  ✓ checks function return values
+  ✓ checks strings (using strcmp)
+
+ PASSED 
+Test Suites: 2 passed, 2 total.
+Tests:       3 passed, 3 total.
 ```

@@ -68,14 +68,14 @@ typedef test_suite_t (*test_suite_run_t)(void);
     void __##label##_impl(test_suite_t *__test_suite)
 
 
-#define TEST(name) __TEST_DECLARE_TEST(name)
 #define IT(name) __TEST_DECLARE_TEST(name)
+#define TEST(name) __TEST_DECLARE_TEST(name)
+
 #define DESCRIBE(label, name) __TEST_DECLARE_TEST_SUITE(label, name)
+#define TEST_SUITE(label, name) __TEST_DECLARE_TEST_SUITE(label, name)
 
 
-#define TEST_MAIN(...) \
-    extern test_suite_run_t __VA_ARGS__; \
-int main(int argc, const char *argv[]) { \
+#define TEST_MAIN(...) int main(int argc, const char *argv[]) { \
     const test_suite_run_t test_suites[] = { __VA_ARGS__ }; \
     \
     int suites_total = 0; \
@@ -103,3 +103,7 @@ int main(int argc, const char *argv[]) { \
         return 1; \
     } \
 }
+
+#define TEST_MAIN_EXTERN(...) \
+    extern test_suite_run_t __VA_ARGS__; \
+    TEST_MAIN(__VA_ARGS__)
