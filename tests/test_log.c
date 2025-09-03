@@ -1,6 +1,8 @@
 // mock the printf function
 #define mock_printf(format, ...) snprintf(mock_stdout, sizeof(mock_stdout), format, __VA_ARGS__);
+
 #define LOG_PRINTF mock_printf
+#define LOG_GLOBAL_LEVEL LOG_LEVEL_WARN
 
 #include <string.h>
 #include "macrotools/test.h"
