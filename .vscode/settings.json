@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.wb": "c",
+        ".dockerignore": "ignore",
+        "stdio.h": "c"
+    }
+}
