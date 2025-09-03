@@ -3,6 +3,7 @@
         "*.wb": "c",
         ".dockerignore": "ignore",
         "stdio.h": "c",
-        "log.h": "c"
+        "log.h": "c",
+        "error.h": "c"
     }
 }

@@ -1,5 +1,4 @@
 #define LOG_GLOBAL_LEVEL LOG_LEVEL_DEBUG
-
 #include "macrotools/log.h"
 
 int main(int argc, const char *argv[]) {

@@ -16,10 +16,7 @@ Alternatively, you can also clone this repository (as a submodule) and add the f
 ### Example
 
 ```c
-// examples/log.c
-
 #define LOG_GLOBAL_LEVEL LOG_LEVEL_DEBUG
-
 #include "macrotools/log.h"
 
 int main(int argc, const char *argv[]) {
@@ -37,9 +34,40 @@ int main(int argc, const char *argv[]) {
 $ make examples && ./build/examples/log
 ```
 
-<pre>
-<b><code style="color: #6BE4E6">DEBUG</code></b> examples/log.c:7: You see this?
-<b><code style="color: #3FC4DE">INFO </code></b> examples/log.c:8: It's just for your own information ...
-<b><code style="color: #FBC3A7">WARN </code></b> examples/log.c:9: This is not good.
-<b><code style="color: #EC6A88">ERROR</code></b> examples/log.c:10: We got a serious problem!
-</pre>
+```console
+DEBUG examples/log.c:7: You see this?
+INFO  examples/log.c:8: It's just for your own information ...
+WARN  examples/log.c:9: This is not good.
+ERROR examples/log.c:10: We got a serious problem!
+```
+
+## Error handling
+
+### Example
+
+```c
+#include <stdio.h>
+#include "macrotools/error.h"
+
+int good_function() { return 0; }
+
+int bad_function() { return 1; }
+
+int main(int argc, const char *argv[]) {
+    TRY_OR_RETURN(good_function(), "good_function() failed.");
+    TRY_OR_RETURN(TRY_ASSERT(0 == 0), "Assertion failed: 0 == 0. The universe is broken.");
+    TRY_OR_WARN(bad_function(), "bad_function() failed. Continuing...");
+    TRY_OR_RETURN(bad_function(), "bad_function() failed again! Who could have known?");
+
+    return 0; // never reached
+}
+```
+
+```bash
+$ make examples && ./build/examples/error
+```
+
+```console
+WARN  examples/error.c:11: Error 1: bad_function() failed. Continuing...
+ERROR examples/error.c:12: Error 1: bad_function() failed again! Who could have known?
+```

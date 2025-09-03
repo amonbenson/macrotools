@@ -11,6 +11,14 @@
 #define ERROR_RETURN_VARIABLE ret
 #endif
 
+#ifndef ERROR_RETURN_OK
+#define ERROR_RETURN_OK 0
+#endif
+
+#ifndef ERROR_RETURN_ASSERTION_FAILED
+#define ERROR_RETURN_ASSERTION_FAILED 1
+#endif
+
 #ifndef ERROR_EXIT_FUNCTION
 #define ERROR_EXIT_FUNCTION exit(1)
 #endif
@@ -22,8 +30,8 @@
 
 #define TRY_OR_RETURN(expr, format, ...) \
     do { \
-        ERROR_RETURN_TYPE _ret; \
-        if ((_ret = (expr)) != 0) { \
+        ERROR_RETURN_TYPE _ret = (expr); \
+        if (_ret != ERROR_RETURN_OK) { \
             LOG_ERROR("Error %d: " format, _ret, ##__VA_ARGS__); \
             return _ret; \
         } \
@@ -31,16 +39,16 @@
 
 #define TRY_OR_WARN(expr, format, ...) \
     do { \
-        ERROR_RETURN_TYPE _ret; \
-        if ((_ret = (expr)) != 0) { \
+        ERROR_RETURN_TYPE _ret = (expr); \
+        if (_ret != ERROR_RETURN_OK) { \
             LOG_WARN("Error %d: " format, _ret, ##__VA_ARGS__); \
         } \
     } while (0)
 
 #define TRY_OR_EXIT(expr, format, ...) \
     do { \
-        ERROR_RETURN_TYPE _ret; \
-        if ((_ret = (expr)) != 0) { \
+        ERROR_RETURN_TYPE _ret = (expr); \
+        if (_ret != ERROR_RETURN_OK) { \
             LOG_ERROR("Error %d: " format, _ret, ##__VA_ARGS__); \
             ERROR_EXIT_FUNCTION; \
         } \
@@ -48,11 +56,12 @@
 
 #define TRY_OR_CLEANUP(expr, format, ...) \
     do { \
-        if ((ERROR_RETURN_VARIABLE = (expr)) != 0) { \
+        ERROR_RETURN_VARIABLE = (expr); \
+        if (ERROR_RETURN_VARIABLE != ERROR_RETURN_OK) { \
             LOG_ERROR("Error %d: " format, ERROR_RETURN_VARIABLE, ##__VA_ARGS__); \
             goto ERROR_CLEANUP_LABEL; \
         } \
     } while (0)
 
 #define _TRY_ASSERT(expr, ret, ...) ((expr) ? 0 : (ret))
-#define TRY_ASSERT(expr, ...) _TRY_ASSERT(expr, ## __VA_ARGS__, 1)
+#define TRY_ASSERT(expr, ...) _TRY_ASSERT(expr, ## __VA_ARGS__, ERROR_RETURN_ASSERTION_FAILED)
