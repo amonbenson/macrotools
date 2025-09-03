@@ -1,9 +1,9 @@
 # `macrotools`
 
 A collection of C header files that provide a basic control flow for any application. The tools include
-- [Logging](#logging)
-- [Error Handling](#error-handling)
-- [Unit Testing](#unit-testing)
+- [Logging](#usage-logging)
+- [Error Handling](#usage-error-handling)
+- [Unit Testing](#usage-unit-testing)
 
 ## Installation
 
