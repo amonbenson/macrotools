@@ -9,7 +9,7 @@ A collection of C header files that provide a basic control flow for any applica
 
 Just copy the `include/macrotools` folder into your own project's include directory. Make sure to keep the `macrotools` subdirectory to avoid name clashes with existing headers.
 
-Alternatively, you can also clone this repository (as a submodule) and add the folder `<repo-name>/include` to your lsit of include directories. Please beware of the [caveats when using git submodules](https://blog.timhutt.co.uk/against-submodules/).
+Alternatively, you can also clone this repository (as a submodule) and add the folder `<repo-name>/include` to your list of include directories. Please beware of the [caveats when using git submodules](https://blog.timhutt.co.uk/against-submodules/).
 
 ## Logging
 
