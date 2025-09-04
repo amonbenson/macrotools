@@ -42,4 +42,4 @@ all: $(TEST_BINARY) $(EXAMPLE_BINARIES)
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) $(EXAMPLE_IMAGES)
+	rm -rf $(BUILD_DIR)
