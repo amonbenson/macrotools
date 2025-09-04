@@ -1,5 +1,7 @@
 # `macrotools`
 
+[![CI](https://github.com/amonbenson/macrotools/actions/workflows/ci.yml/badge.svg)](https://github.com/amonbenson/macrotools/actions/workflows/ci.yml)
+
 A collection of C header files that provide a basic control flow for any application. The tools include
 - [Logging](#usage-logging)
 - [Error Handling](#usage-error-handling)
