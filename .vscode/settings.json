@@ -4,6 +4,16 @@
         ".dockerignore": "ignore",
         "stdio.h": "c",
         "log.h": "c",
-        "error.h": "c"
+        "error.h": "c",
+        "color.h": "c",
+        "array": "c",
+        "compare": "c",
+        "functional": "c",
+        "tuple": "c",
+        "type_traits": "c",
+        "utility": "c",
+        "random": "c",
+        "string.h": "c",
+        "test.h": "c"
     }
 }
