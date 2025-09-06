@@ -3,6 +3,7 @@
 #include "macrotools/color.h"
 #include <ctype.h>
 #include <string.h>
+#include <stddef.h>
 
 
 #ifndef TEST_PRINTF
@@ -135,37 +136,37 @@ typedef test_suite_t (*test_suite_run_t)(void);
 
 // string comparators
 #define EXPECT_STRING_EQ(actual, expected, n) { \
-    int _n = (int) (n); \
+    size_t _n = (size_t) (n); \
     __TEST_ASSERTION_DIFF(const char *, actual, const char *, expected, strncmp(_actual_value, _expected_value, _n) == 0, { \
-        for (int i = 0; i < _n && _actual_value[i] != '\0'; i++) { __TEST_PRINT_CHAR(_actual_value[i]); } \
+        for (size_t i = 0; i < _n && _actual_value[i] != '\0'; i++) { __TEST_PRINT_CHAR(_actual_value[i]); } \
     }, { \
-        for (int i = 0; i < _n && _expected_value[i] != '\0'; i++) { __TEST_PRINT_CHAR(_expected_value[i]); } \
+        for (size_t i = 0; i < _n && _expected_value[i] != '\0'; i++) { __TEST_PRINT_CHAR(_expected_value[i]); } \
     }); \
 }
 
 #define EXPECT_STRING_NOT_EQ(actual, expected, n) { \
-    int _n = (int) (n); \
+    size_t _n = (size_t) (n); \
     __TEST_ASSERTION_SIMPLE(const char *, actual, const char *, expected, strncmp(_actual_value, _expected_value, _n) != 0, { \
         TEST_PRINTF("any string other than \""); \
-        for (int i = 0; i < _n && _actual_value[i] != '\0'; i++) { __TEST_PRINT_CHAR(_actual_value[i]); }; \
+        for (size_t i = 0; i < _n && _actual_value[i] != '\0'; i++) { __TEST_PRINT_CHAR(_actual_value[i]); }; \
         TEST_PRINTF("\""); \
     }); \
 }
 
 #define EXPECT_BUFFER_EQ(actual, expected, n) { \
-    int _n = (int) (n); \
-    __TEST_ASSERTION_DIFF(const char *, actual, const char *, expected, memcmp(_actual_value, _expected_value, _n) == 0, { \
-        TEST_PRINTF("hex "); for (int i = 0; i < _n; i++) { TEST_PRINTF("%02x ", _actual_value[i]); } \
+    size_t _n = (size_t) (n); \
+    __TEST_ASSERTION_DIFF(const unsigned char *, actual, const unsigned char *, expected, memcmp(_actual_value, _expected_value, _n) == 0, { \
+        TEST_PRINTF("hex "); for (size_t i = 0; i < _n; i++) { TEST_PRINTF("%02x ", _actual_value[i]); } \
     }, { \
-        TEST_PRINTF("hex "); for (int i = 0; i < _n; i++) { TEST_PRINTF("%02x ", _expected_value[i]); } \
+        TEST_PRINTF("hex "); for (size_t i = 0; i < _n; i++) { TEST_PRINTF("%02x ", _expected_value[i]); } \
     }); \
 }
 
 #define EXPECT_BUFFER_NOT_EQ(actual, expected, n) { \
-    int _n = (int) (n); \
+    size_t _n = (size_t) (n); \
     __TEST_ASSERTION_SIMPLE(const char *, actual, const char *, expected, memcmp(_actual_value, _expected_value, _n) != 0, { \
         TEST_PRINTF("any buffer other than hex: "); \
-        for (int i = 0; i < _n; i++) { TEST_PRINTF("%02x ", _actual_value[i]); }; \
+        for (size_t i = 0; i < _n; i++) { TEST_PRINTF("%02x ", _actual_value[i]); }; \
     }); \
 }
 
