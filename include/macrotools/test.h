@@ -108,7 +108,7 @@ typedef test_suite_t (*test_suite_run_t)(void);
 }
 
 #define EXPECT_POINTER_EQ(actual, expected) __EXPECT_INTEGRAL(actual, expected, void *, "%p", ==, "to equal")
-#define EXPECT_POINTER_NE(actual, expected) __EXPECT_INTEGRAL(actual, expected, void *, "%p", ==, "to not equal")
+#define EXPECT_POINTER_NE(actual, expected) __EXPECT_INTEGRAL(actual, expected, void *, "%p", !=, "to not equal")
 
 #define EXPECT_SIGNED_GT(actual, expected) __EXPECT_INTEGRAL(actual, expected, long long int, "%lld", >, "to be greater than")
 #define EXPECT_SIGNED_GE(actual, expected) __EXPECT_INTEGRAL(actual, expected, long long int, "%lld", >=, "to be greater than or equal to")
@@ -118,7 +118,7 @@ typedef test_suite_t (*test_suite_run_t)(void);
 #define EXPECT_SIGNED_NOT_CLOSE_TO(actual, expected, delta) __EXPECT_INTEGRAL_NOT_CLOSE_TO(actual, expected, delta, long long int, "%lld")
 
 #define EXPECT_EQ(actual, expected) __EXPECT_INTEGRAL(actual, expected, unsigned long long int, "%llu", ==, "to equal")
-#define EXPECT_NE(actual, expected) __EXPECT_INTEGRAL(actual, expected, unsigned long long int, "%llu", ==, "to not equal")
+#define EXPECT_NE(actual, expected) __EXPECT_INTEGRAL(actual, expected, unsigned long long int, "%llu", !=, "to not equal")
 #define EXPECT_UNSIGNED_GT(actual, expected) __EXPECT_INTEGRAL(actual, expected, unsigned long long int, "%llu", >, "to be greater than")
 #define EXPECT_UNSIGNED_GE(actual, expected) __EXPECT_INTEGRAL(actual, expected, unsigned long long int, "%llu", >=, "to be greater than or equal to")
 #define EXPECT_UNSIGNED_LT(actual, expected) __EXPECT_INTEGRAL(actual, expected, unsigned long long int, "%llu", <, "to be less than")
