@@ -152,6 +152,23 @@ typedef test_suite_t (*test_suite_run_t)(void);
     }); \
 }
 
+#define EXPECT_BUFFER_EQ(actual, expected, n) { \
+    int _n = (int) (n); \
+    __TEST_ASSERTION_DIFF(const char *, actual, const char *, expected, memcmp(_actual_value, _expected_value, _n) == 0, { \
+        TEST_PRINTF("hex "); for (int i = 0; i < _n; i++) { TEST_PRINTF("%02x ", _actual_value[i]); } \
+    }, { \
+        TEST_PRINTF("hex "); for (int i = 0; i < _n; i++) { TEST_PRINTF("%02x ", _expected_value[i]); } \
+    }); \
+}
+
+#define EXPECT_BUFFER_NOT_EQ(actual, expected, n) { \
+    int _n = (int) (n); \
+    __TEST_ASSERTION_SIMPLE(const char *, actual, const char *, expected, memcmp(_actual_value, _expected_value, _n) != 0, { \
+        TEST_PRINTF("any buffer other than hex: "); \
+        for (int i = 0; i < _n; i++) { TEST_PRINTF("%02x ", _actual_value[i]); }; \
+    }); \
+}
+
 
 #define __TEST_DECLARE_TEST(name) for( \
     int __loop_break = 0, __current_test_failed = 0; \
