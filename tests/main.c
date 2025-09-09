@@ -1,3 +1,3 @@
-#include "macrotools/test.h"
+#include "macrotools/test_main.h"
 
-TEST_MAIN_EXTERN(test_log)
+TEST_MAIN_EXTERN(test_test)
