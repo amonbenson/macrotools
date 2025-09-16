@@ -98,13 +98,19 @@ typedef test_suite_t (*test_suite_run_t)(void);
 
 #define __EXPECT_INTEGRAL_CLOSE_TO(actual, expected, delta, type, type_fmt) { \
     typeof(type) _delta_value = (type) delta; \
-    __TEST_ASSERTION_SIMPLE(type, actual, type, expected, __TEST_ABS(_actual_value - _expected_value) <= _delta_value, \
+    __TEST_ASSERTION_SIMPLE(type, actual, type, expected, \
+        (_actual_value > _expected_value) \
+            ? (_actual_value - _expected_value) <= _delta_value \
+            : (_expected_value - _actual_value) <= _delta_value, \
         TEST_PRINTF(type_fmt " to be close to " type_fmt " (received difference " type_fmt ", but expected at most " type_fmt ")", _actual_value, _expected_value, __TEST_ABS(_actual_value - _expected_value), _delta_value)); \
 }
 
 #define __EXPECT_INTEGRAL_NOT_CLOSE_TO(actual, expected, delta, type, type_fmt) { \
     typeof(type) _delta_value = (type) delta; \
-    __TEST_ASSERTION_SIMPLE(type, actual, type, expected, __TEST_ABS(_actual_value - _expected_value) > _delta_value, \
+    __TEST_ASSERTION_SIMPLE(type, actual, type, expected, \
+        (_actual_value > _expected_value) \
+            ? (_actual_value - _expected_value) > _delta_value \
+            : (_expected_value - _actual_value) > _delta_value, \
         TEST_PRINTF(type_fmt " to be close to " type_fmt " (received difference " type_fmt ", but expected more than " type_fmt ")", _actual_value, _expected_value, __TEST_ABS(_actual_value - _expected_value), _delta_value)); \
 }
 
