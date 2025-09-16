@@ -4,12 +4,15 @@
 
 #define TEST_MAIN(...) \
     int main(int argc, const char *argv[]) { \
+        MT_SCOPE_DEFINE_ROOT(); \
         static mt_test_plan_t plan; \
         mt_test_plan_init(&plan, "root_plan"); \
         \
         const test_suite_wrapper_t suite_wrappers[] = { __VA_ARGS__ }; \
         for (int i = 0; i < sizeof(suite_wrappers) / sizeof(suite_wrappers[0]); i++) { \
-            suite_wrappers[i](&plan); \
+            MT_SCOPE() { \
+                suite_wrappers[i](__mt_scope, &plan); \
+            } \
         } \
         \
         mt_test_node_debug_print(&plan.node, 1); \

@@ -54,13 +54,25 @@ void mt_test_node_debug_print(mt_test_node_t *node, int recurse) {
     for (int i = 0; i < node->level; i++) {
         printf("  ");
     }
-    printf("- %s \"%s\"", __MT_TEST_NODE_TYPE_STR(node->type), node->name);
+    printf("- %s \"%s\":", __MT_TEST_NODE_TYPE_STR(node->type), node->name);
 
     // print type-specific infos
     switch (node->type) {
+        case __MT_TEST_NODE_SUITE:
+            const mt_test_suite_t *suite = (mt_test_suite_t *) node;
+            printf(" source=\"%s:%d\", failed=%s",
+                suite->source.file,
+                suite->source.line,
+                suite->failed ? "true" : "false");
+            break;
         case __MT_TEST_NODE_CASE:
             const mt_test_case_t *tcase = (mt_test_case_t *) node;
-            printf(" suite=\"%s\"", tcase->suite ? tcase->suite->node.name : "???");
+            printf(" suite=\"%s\", plan=\"%s\", source=\"%s:%d\", failed=%s",
+                tcase->suite ? tcase->suite->node.name : "???",
+                tcase->plan ? tcase->plan->node.name : "???",
+                tcase->source.file,
+                tcase->source.line,
+                tcase->failed ? "true" : "false");
             break;
         default:
             break;
@@ -84,19 +96,33 @@ void mt_test_plan_init(mt_test_plan_t *plan, const char *name) {
     plan->num_cases_failed = 0;
 }
 
-void mt_test_suite_init(mt_test_suite_t *suite, mt_test_plan_t *plan, const char *name) {
+void mt_test_suite_init(mt_test_suite_t *suite, mt_test_plan_t *plan, const char *name, mt_test_source_t source) {
     mt_test_node_init(&suite->node, __MT_TEST_NODE_SUITE, name);
+    suite->source = source;
     mt_test_node_add_child(&plan->node, &suite->node);
 }
 
-void mt_test_case_init(mt_test_case_t *tcase, mt_test_node_t *parent, const char *name) {
-    // use suite as the default parent
+void mt_test_case_init(mt_test_case_t *tcase, mt_test_node_t *parent, const char *name, mt_test_source_t source) {
     mt_test_node_init(&tcase->node, __MT_TEST_NODE_CASE, name);
-    tcase->suite = __MT_TEST_NODE_GET_SUITE(parent);
+
+    // lookup the parent suite and test plan
+    switch (parent->type) {
+        case __MT_TEST_NODE_SUITE:
+            tcase->suite = (mt_test_suite_t *) parent;
+            break;
+        case __MT_TEST_NODE_CASE:
+            tcase->suite = ((mt_test_case_t *) parent)->suite;
+            break;
+        default:
+            tcase->suite = NULL;
+            break;
+    }
     if (tcase->suite == NULL) {
         LOG_ERROR("Test case parent was neither a test suite nor another test case.");
         return;
     }
+    tcase->plan = (mt_test_plan_t *) tcase->suite->node.parent;
+    tcase->source = source;
 
     mt_test_node_add_child(parent, &tcase->node);
 }

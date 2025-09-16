@@ -12,6 +12,11 @@
     ((x) == __MT_TEST_NODE_CASE ? "case" : \
     ((x) == __MT_TEST_NODE_EXPECT ? "expect" : "unknown"))))
 
+typedef struct {
+    const char *file;
+    int line;
+} mt_test_source_t;
+
 
 typedef struct mt_test_node mt_test_node_t;
 typedef struct mt_test_plan mt_test_plan_t;
@@ -38,20 +43,17 @@ struct mt_test_plan {
 
 struct mt_test_suite {
     struct mt_test_node node;
+    mt_test_source_t source;
     int failed;
 };
 
 struct mt_test_case {
     struct mt_test_node node;
+    mt_test_plan_t *plan;
     mt_test_suite_t *suite;
+    mt_test_source_t source;
     int failed;
 };
-
-#define __MT_TEST_NODE_GET_SUITE(node) \
-    ((node)->type == __MT_TEST_NODE_SUITE ? ((mt_test_suite_t *) (node)) : \
-    ((node)->type == __MT_TEST_NODE_CASE ? (((mt_test_case_t *) (node))->suite) : \
-    NULL))
-#define __MT_TEST_NODE_GET_PLAN(node) ((mt_test_plan_t *) (__MT_TEST_NODE_SUITE(node)->parent))
 
 
 void mt_test_node_init(mt_test_node_t *node, int type, const char *name);
@@ -60,5 +62,5 @@ void mt_test_node_add_child(mt_test_node_t *parent, mt_test_node_t *child);
 void mt_test_node_debug_print(mt_test_node_t *node, int recurse);
 
 void mt_test_plan_init(mt_test_plan_t *plan, const char *name);
-void mt_test_suite_init(mt_test_suite_t *suite, mt_test_plan_t *plan, const char *name);
-void mt_test_case_init(mt_test_case_t *tcase, mt_test_node_t *parent, const char *name);
+void mt_test_suite_init(mt_test_suite_t *suite, mt_test_plan_t *plan, const char *name, mt_test_source_t source);
+void mt_test_case_init(mt_test_case_t *tcase, mt_test_node_t *parent, const char *name, mt_test_source_t source);
