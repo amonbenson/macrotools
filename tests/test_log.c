@@ -23,7 +23,7 @@ DESCRIBE(test_log, "log") {
 
         char expected_stdout[1024];
         snprintf(expected_stdout, sizeof(expected_stdout),
-            MT_COLOR_RED "ERROR" MT_COLOR_RESET " %s:%d: Some message.\r\n",
+            MT_BACKGROUND_RED " ERROR " MT_COLOR_RESET " %s:%d: Some message.\r\n",
             __FILE__,
             log_line);
         EXPECT_STRING_EQ(mock_stdout, expected_stdout, MIN(sizeof(mock_stdout), sizeof(expected_stdout)));
